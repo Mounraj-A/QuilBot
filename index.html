@@ -9,136 +9,93 @@
   body {
     margin: 0;
     font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(135deg, #ff7a18, #ffb347);
+    background: radial-gradient(circle at center, #0a2540, #020b18);
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
+    overflow: hidden;
   }
 
-  .card {
-    background: white;
-    width: 90%;
-    max-width: 420px;
-    padding: 28px;
-    border-radius: 20px;
+  .container {
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    max-width: 420px;
+    padding: 30px;
   }
 
   h1 {
     margin: 0;
-    color: #ff7a18;
-    font-size: 26px;
+    font-size: 28px;
+    color: #ff9f43;
   }
 
-  .subtitle {
+  p {
     font-size: 14px;
-    color: #666;
-    margin-top: 6px;
-    margin-bottom: 22px;
+    color: #cfd8dc;
+    margin-top: 10px;
   }
 
-  .mic-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
-  }
-
-  .mic-circle {
-    width: 110px;
-    height: 110px;
+  /* Sandra-style orb */
+  .orb {
+    width: 180px;
+    height: 180px;
+    margin: 40px auto;
     border-radius: 50%;
-    background: radial-gradient(circle, #ff8c1a, #ff6a00);
+    background: radial-gradient(circle, #ff9f43, #ff6a00);
+    box-shadow: 0 0 40px rgba(255, 159, 67, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 42px;
-    box-shadow: 0 0 25px rgba(255, 120, 0, 0.6);
-    animation: pulse 2s infinite;
+    font-size: 50px;
+    cursor: pointer;
+    animation: pulse 2.5s infinite;
   }
 
   @keyframes pulse {
     0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.15); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 0.85; }
+    100% { transform: scale(1); opacity: 1; }
   }
 
-  .mic-text {
-    margin-top: 10px;
+  .hint {
     font-size: 13px;
-    color: #555;
+    color: #b0bec5;
   }
 
-  .helper-box {
-    background: #fff4ec;
-    padding: 12px;
-    border-radius: 12px;
-    font-size: 13px;
-    text-align: left;
-    margin-top: 16px;
-  }
-
-  .helper-box ul {
-    padding-left: 18px;
-    margin: 8px 0 0;
-  }
-
-  .tips {
-    margin-top: 16px;
-    background: #f9f9f9;
-    padding: 12px;
-    border-radius: 12px;
+  .features {
+    margin-top: 20px;
     font-size: 13px;
     text-align: left;
   }
 
-  .note {
-    font-size: 12px;
-    color: #888;
-    margin-top: 14px;
+  .features li {
+    margin-bottom: 6px;
   }
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
   <h1>🍔 QuickBite</h1>
-  <div class="subtitle">Voice Order Support Assistant</div>
+  <p>AI Voice Order Support</p>
 
-  <div class="mic-container">
-    <div class="mic-circle">🎤</div>
-    <div class="mic-text">Voice support is ready</div>
+  <div class="orb" id="startVoice">🎤</div>
+
+  <div class="hint">
+    Tap the mic to talk to QuickBite AI
   </div>
 
-  <div class="helper-box">
-    <strong>How to use:</strong>
-    <ul>
-      <li>Click the floating mic icon (bottom-right)</li>
-      <li>Allow microphone access</li>
-      <li>Speak clearly and slowly</li>
-      <li>Listen carefully to the response</li>
-    </ul>
-  </div>
-
-  <div class="tips">
-    <strong>You can ask:</strong>
-    <ul>
-      <li>Where is my order?</li>
-      <li>My food is delayed</li>
-      <li>I received the wrong item</li>
-      <li>I want to cancel my order</li>
-    </ul>
-  </div>
-
-  <div class="note">
-    🔊 Tip: Use earphones or increase volume for clear audio.<br>
-    🎤 Voice starts when you click the floating mic icon.
-  </div>
+  <ul class="features">
+    <li>✔ Order status tracking</li>
+    <li>✔ Delivery delay assistance</li>
+    <li>✔ Missing or wrong items</li>
+    <li>✔ Order cancellation</li>
+  </ul>
 </div>
 
-<!-- ================= VAPI VOICE WIDGET ================= -->
+<!-- ================= VAPI WIDGET ================= -->
 <script>
   var vapiInstance = null;
 
@@ -156,7 +113,8 @@
     var g = document.createElement(t),
         s = d.getElementsByTagName(t)[0];
 
-    g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+    g.src =
+      "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
     g.async = true;
     g.defer = true;
 
@@ -168,10 +126,15 @@
         assistant: assistant,
         config: buttonConfig
       });
+
+      // Center button opens the Vapi widget
+      document.getElementById("startVoice").onclick = function () {
+        vapiInstance.open();
+      };
     };
   })(document, "script");
 </script>
-<!-- ===================================================== -->
+<!-- =============================================== -->
 
 </body>
 </html>
