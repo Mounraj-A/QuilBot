@@ -109,7 +109,9 @@
 <!-- VAPI SDK -->
 <!-- VAPI OFFICIAL WEB SDK -->
 <script type="module">
-  import Vapi from "https://unpkg.com/@vapi-ai/web/dist/index.mjs";
+  import Vapi from "https://unpkg.com/@vapi-ai/web@latest/dist/index.mjs";
+
+  console.log("Vapi imported:", Vapi);
 
   const micBtn = document.getElementById("micBtn");
   const status = document.getElementById("status");
@@ -118,7 +120,7 @@
 
   let callActive = false;
 
-  micBtn.onclick = async () => {
+  micBtn.addEventListener("click", async () => {
     if (!callActive) {
       status.innerText = "🎧 Connecting... Please allow microphone access";
 
@@ -128,14 +130,15 @@
         callActive = true;
         micBtn.classList.add("listening");
         status.innerText = "🟢 Listening... You can speak now";
+
       } catch (err) {
-        console.error(err);
-        status.innerText = "❌ Unable to start voice call";
+        console.error("Vapi start error:", err);
+        status.innerText = "❌ Voice start failed";
       }
     } else {
       vapi.stop();
     }
-  };
+  });
 
   vapi.on("call-end", () => {
     callActive = false;
@@ -143,6 +146,7 @@
     status.innerText = "🔴 Call ended. Tap mic to start again";
   });
 </script>
+
 
 
 
