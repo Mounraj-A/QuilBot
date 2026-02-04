@@ -114,9 +114,7 @@
   const micBtn = document.getElementById("micBtn");
   const status = document.getElementById("status");
 
-  const vapi = new window.Vapi({
-    publicKey: "4e7e25b7-f318-482d-911f-de10cc4ec577"
-  });
+  const vapi = new window.Vapi("4e7e25b7-f318-482d-911f-de10cc4ec577");
 
   let callActive = false;
 
@@ -125,9 +123,7 @@
       status.innerText = "🎧 Connecting... Please allow microphone access";
 
       try {
-        await vapi.start({
-          assistantId: "b7e7c110-b28a-441d-aa38-9dae847e2f4d"
-        });
+        await vapi.start("b7e7c110-b28a-441d-aa38-9dae847e2f4d");
 
         callActive = true;
         micBtn.classList.add("listening");
@@ -148,6 +144,7 @@
     status.innerText = "🔴 Call ended. Tap mic to start again";
   });
 </script>
+
 
 
 </body>
