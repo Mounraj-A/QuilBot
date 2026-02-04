@@ -108,45 +108,38 @@
 
 <!-- VAPI SDK -->
 <!-- VAPI OFFICIAL WEB SDK -->
-<script type="module">
-  import Vapi from "https://unpkg.com/@vapi-ai/web@latest/dist/index.mjs";
+ <script>
+    var vapiInstance = null;
 
-  console.log("Vapi imported:", Vapi);
+    const assistant = "b7e7c110-b28a-441d-aa38-9dae847e2f4d";
+    const apiKey = "4e7e25b7-f318-482d-911f-de10cc4ec577";
 
-  const micBtn = document.getElementById("micBtn");
-  const status = document.getElementById("status");
+    const buttonConfig = {
+      position: "bottom-right",
+      offset: "20px",
+      theme: "dark"
+    };
 
-  const vapi = new Vapi("4e7e25b7-f318-482d-911f-de10cc4ec577");
+    (function (d, t) {
+      var g = document.createElement(t),
+          s = d.getElementsByTagName(t)[0];
 
-  let callActive = false;
+      g.src =
+        "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer = true;
+      g.async = true;
 
-  micBtn.addEventListener("click", async () => {
-    if (!callActive) {
-      status.innerText = "🎧 Connecting... Please allow microphone access";
+      s.parentNode.insertBefore(g, s);
 
-      try {
-        await vapi.start("b7e7c110-b28a-441d-aa38-9dae847e2f4d");
-
-        callActive = true;
-        micBtn.classList.add("listening");
-        status.innerText = "🟢 Listening... You can speak now";
-
-      } catch (err) {
-        console.error("Vapi start error:", err);
-        status.innerText = "❌ Voice start failed";
-      }
-    } else {
-      vapi.stop();
-    }
-  });
-
-  vapi.on("call-end", () => {
-    callActive = false;
-    micBtn.classList.remove("listening");
-    status.innerText = "🔴 Call ended. Tap mic to start again";
-  });
-</script>
-
+      g.onload = function () {
+        vapiInstance = window.vapiSDK.run({
+          apiKey: apiKey,
+          assistant: assistant,
+          config: buttonConfig,
+        });
+      };
+    })(document, "script");
+  </script>
 
 
 
