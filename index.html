@@ -20,8 +20,8 @@
     background: white;
     width: 90%;
     max-width: 420px;
-    padding: 25px;
-    border-radius: 18px;
+    padding: 28px;
+    border-radius: 20px;
     text-align: center;
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
   }
@@ -29,56 +29,74 @@
   h1 {
     margin: 0;
     color: #ff7a18;
+    font-size: 26px;
   }
 
-  p {
-    color: #555;
+  .subtitle {
     font-size: 14px;
+    color: #666;
+    margin-top: 6px;
+    margin-bottom: 22px;
   }
 
-  .mic-btn {
-    margin-top: 25px;
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: none;
-    background: #ff7a18;
-    color: white;
-    font-size: 36px;
-    cursor: pointer;
-    position: relative;
+  .mic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
   }
 
-  .mic-btn.listening::after {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: -10px;
+  .mic-circle {
     width: 110px;
     height: 110px;
     border-radius: 50%;
-    border: 3px solid rgba(255,122,24,0.6);
-    animation: pulse 1.5s infinite;
+    background: radial-gradient(circle, #ff8c1a, #ff6a00);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    box-shadow: 0 0 25px rgba(255, 120, 0, 0.6);
+    animation: pulse 2s infinite;
   }
 
   @keyframes pulse {
     0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.5); opacity: 0; }
+    100% { transform: scale(1.15); opacity: 0.6; }
   }
 
-  .status {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #333;
+  .mic-text {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .helper-box {
+    background: #fff4ec;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    text-align: left;
+    margin-top: 16px;
+  }
+
+  .helper-box ul {
+    padding-left: 18px;
+    margin: 8px 0 0;
   }
 
   .tips {
-    margin-top: 15px;
-    background: #fff4ec;
+    margin-top: 16px;
+    background: #f9f9f9;
     padding: 12px;
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: 13px;
     text-align: left;
+  }
+
+  .note {
+    font-size: 12px;
+    color: #888;
+    margin-top: 14px;
   }
 </style>
 </head>
@@ -87,12 +105,21 @@
 
 <div class="card">
   <h1>🍔 QuickBite</h1>
-  <p>Voice Order Support Assistant</p>
+  <div class="subtitle">Voice Order Support Assistant</div>
 
-  <button id="micBtn" class="mic-btn">🎤</button>
+  <div class="mic-container">
+    <div class="mic-circle">🎤</div>
+    <div class="mic-text">Voice support is ready</div>
+  </div>
 
-  <div id="status" class="status">
-    Tap the mic and start speaking
+  <div class="helper-box">
+    <strong>How to use:</strong>
+    <ul>
+      <li>Click the floating mic icon (bottom-right)</li>
+      <li>Allow microphone access</li>
+      <li>Speak clearly and slowly</li>
+      <li>Listen carefully to the response</li>
+    </ul>
   </div>
 
   <div class="tips">
@@ -104,45 +131,47 @@
       <li>I want to cancel my order</li>
     </ul>
   </div>
+
+  <div class="note">
+    🔊 Tip: Use earphones or increase volume for clear audio.<br>
+    🎤 Voice starts when you click the floating mic icon.
+  </div>
 </div>
 
-<!-- VAPI SDK -->
-<!-- VAPI OFFICIAL WEB SDK -->
- <script>
-    var vapiInstance = null;
+<!-- ================= VAPI VOICE WIDGET ================= -->
+<script>
+  var vapiInstance = null;
 
-    const assistant = "b7e7c110-b28a-441d-aa38-9dae847e2f4d";
-    const apiKey = "4e7e25b7-f318-482d-911f-de10cc4ec577";
+  const assistant = "b7e7c110-b28a-441d-aa38-9dae847e2f4d";
+  const apiKey = "4e7e25b7-f318-482d-911f-de10cc4ec577";
 
-    const buttonConfig = {
-      position: "bottom-right",
-      offset: "20px",
-      theme: "dark"
+  const buttonConfig = {
+    position: "bottom-right",
+    offset: "20px",
+    theme: "dark",
+    autoStart: false
+  };
+
+  (function (d, t) {
+    var g = document.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+
+    g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+    g.async = true;
+    g.defer = true;
+
+    s.parentNode.insertBefore(g, s);
+
+    g.onload = function () {
+      vapiInstance = window.vapiSDK.run({
+        apiKey: apiKey,
+        assistant: assistant,
+        config: buttonConfig
+      });
     };
-
-    (function (d, t) {
-      var g = document.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-
-      g.src =
-        "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-      g.defer = true;
-      g.async = true;
-
-      s.parentNode.insertBefore(g, s);
-
-      g.onload = function () {
-        vapiInstance = window.vapiSDK.run({
-          apiKey: apiKey,
-          assistant: assistant,
-          config: buttonConfig,
-        });
-      };
-    })(document, "script");
-  </script>
-
-
-
+  })(document, "script");
+</script>
+<!-- ===================================================== -->
 
 </body>
 </html>
