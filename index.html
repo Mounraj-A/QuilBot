@@ -108,13 +108,13 @@
 
 <!-- VAPI SDK -->
 <!-- VAPI OFFICIAL WEB SDK -->
-<script src="https://unpkg.com/@vapi-ai/web/dist/index.js"></script>
+<script type="module">
+  import Vapi from "https://unpkg.com/@vapi-ai/web/dist/index.mjs";
 
-<script>
   const micBtn = document.getElementById("micBtn");
   const status = document.getElementById("status");
 
-  const vapi = new window.Vapi("4e7e25b7-f318-482d-911f-de10cc4ec577");
+  const vapi = new Vapi("4e7e25b7-f318-482d-911f-de10cc4ec577");
 
   let callActive = false;
 
@@ -128,7 +128,6 @@
         callActive = true;
         micBtn.classList.add("listening");
         status.innerText = "🟢 Listening... You can speak now";
-
       } catch (err) {
         console.error(err);
         status.innerText = "❌ Unable to start voice call";
@@ -144,6 +143,7 @@
     status.innerText = "🔴 Call ended. Tap mic to start again";
   });
 </script>
+
 
 
 
