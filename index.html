@@ -107,13 +107,14 @@
 </div>
 
 <!-- VAPI SDK -->
-<script src="https://cdn.vapi.ai/web/vapi.js"></script>
+<!-- VAPI OFFICIAL WEB SDK -->
+<script src="https://unpkg.com/@vapi-ai/web/dist/index.js"></script>
 
 <script>
   const micBtn = document.getElementById("micBtn");
   const status = document.getElementById("status");
 
-  const vapi = new Vapi({
+  const vapi = new window.Vapi({
     publicKey: "4e7e25b7-f318-482d-911f-de10cc4ec577"
   });
 
@@ -122,6 +123,7 @@
   micBtn.onclick = async () => {
     if (!callActive) {
       status.innerText = "🎧 Connecting... Please allow microphone access";
+
       try {
         await vapi.start({
           assistantId: "b7e7c110-b28a-441d-aa38-9dae847e2f4d"
@@ -131,9 +133,9 @@
         micBtn.classList.add("listening");
         status.innerText = "🟢 Listening... You can speak now";
 
-      } catch (e) {
-        status.innerText = "❌ Microphone permission denied";
-        console.error(e);
+      } catch (err) {
+        console.error(err);
+        status.innerText = "❌ Unable to start voice call";
       }
     } else {
       vapi.stop();
@@ -146,6 +148,7 @@
     status.innerText = "🔴 Call ended. Tap mic to start again";
   });
 </script>
+
 
 </body>
 </html>
